@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Guessing Game</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+      <nav>
+        <ul class="nav nav-pills pull-right">
+          <li role="presentation" class="active"><a href="index.html">HOME</a></li>
+          <li role="presentation"><a href="about.html">ABOUT</a></li>
+            <li role="presentation"><a href="contact.html">CONTACT</a></li>
+      </ul>
+    </nav>
+    <h3 class="text-muted">THE GUESSING GAME</h3>
+  </div>
+
+  <div class="jumbotron">
+<h1>Make a guess</h1><br>
+<p>
+<form class="form-inline">
+  <div class="form-group">
+    <label for="guess"></label>
+    <input type="number" class="form-control input-lg" id="guess" placeholder="Between 1 and 100">
+  </div>
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+<p>
+  <br>
+  <div class="alert alert-success" role="alert"><h4>You're on the right track... 2 guesses remaining</h4></div>
+</p>
+<br>
+</p>
+      <button type="button" class="btn btn-sm btn-primary" >Try Again</button>
+      <button type="button" class="btn btn-sm btn-primary">I Need A Hint!</button>
+  </p>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2015 Michael Bushoy</p>
+  </footer>
+</div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
