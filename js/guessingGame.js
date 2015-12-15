@@ -5,38 +5,31 @@ var playersGuess=0;
 var winningNumber=0;
 var count=[];
 var guesses=5;
-
-
-
 /* **** Guessing Game Functions **** */
 
 // Generate the Winning Number
 
 function generateWinningNumber(event){
-	// add code here
-
   count=[];
-
-  winningNumber=(Math.random()*100).toFixed(0);
+  winningNumber=(Math.ceil(Math.random()*100));
 }
 
 
 // Fetch the Players Guess
-
 function playersGuessSubmission(event){
-	// add code here
   playersGuess = +document.getElementById('guess1').value;
-  if (count.indexOf(playersGuess)<0 && playersGuess >= 0 && playersGuess <= 100) {
+  if (count.indexOf(playersGuess)<0 && playersGuess >= 0 && playersGuess <= 100) { //if guess is valid add to array, progress guess count, hide alert2
   count.push(playersGuess);
   guesses=5-count.length;
-  $("alert2").remove();
+  $("#alert2").hide();
 }
 else if (count.indexOf(playersGuess)>0) {
-
+  $("#alert2").show();
   $("#alert2").html("<h4>You already guessed that!");
 }
 else if (playersGuess <=0 || playersGuess >=100) {
 
+  $("#alert2").show();
   $("#alert2").html("<h4>Please guess between 0 and 100!");
 }
     document.getElementById('guess1').value = "";
@@ -60,20 +53,22 @@ function checkGuess(){
 	// add code here
   if (playersGuess==winningNumber) {
     $("#alert").html("<h4> YOU WIN!</h4>");
-    $("#alert2").remove();
-
+    $("#alert2").hide();
   } else {
     $("#alert").html("<h4>"+guesses+" guesses remaining.<br> "+guessMessage()+"</h4>");
   }
   if (count.length>=5) {
-        $("#alert").remove();
+        $("#alert").hide();
+        $("#alert2").show();
         $("#alert2").html("<h4>You lose!</h4>");
     }
-
 }
 
 function guessMessage() {
+if (playersGuess >=0 && playersGuess <=100)
   return "Your guess was "+lowerOrHigher()+" by "+distance()+".";
+else
+  return "";
 
 }
 
@@ -96,11 +91,11 @@ function distance() {
 function provideHint(){
 	// add code here
 var hintArr=[];
-var ran=0;
+var ran=1;
 for (var i=0;i<((5-count.length)*2-1);i++) {
-    ran=Math.floor(Math.random()*100);
+    ran=Math.ceil(Math.random()*100);
     while (hintArr.indexOf(ran)>-1)
-      ran=Math.floor(Math.random()*100);
+      ran=Math.ceil(Math.random()*100);
      hintArr.push(ran);
    };
 
@@ -108,13 +103,11 @@ if (hintArr.indexOf(winningNumber)<0)
   hintArr.push(winningNumber);
 hintArr.sort(function(a,b) {return a-b});
 
+$("#alert2").show();
 $("#alert2").html("<h4>It's one of these: "+hintArr+".</h4>");
 
 
 }
-
-
-
 
 // Allow the "Player" to Play Again
 
