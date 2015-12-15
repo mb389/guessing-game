@@ -1,85 +1,122 @@
 /* **** Global Variables **** */
 // try to elminate these global variables in your project, these are here just to start.
-
-var playersGuess=0;
-var winningNumber=0;
-var count=[];
-var guesses=5;
-var lastDist=0;
-/* **** Guessing Game Functions **** */
-
-// Generate the Winning Number
-
-function generateWinningNumber(event){
-  count=[];
-  winningNumber=(Math.ceil(Math.random()*100));
-}
-
-// Fetch the Players Guess
-function playersGuessSubmission(event){
-  playersGuess = +document.getElementById('guess1').value;
-  if (count.indexOf(playersGuess)<0 && playersGuess > 0 && playersGuess <= 100) { //if guess is valid add to array, progress guess count, hide alert2
-  count.push(playersGuess);
-  guesses=5-count.length;
-  $("#alert2").hide();
-}
-else if (count.indexOf(playersGuess)>-1) {
-  $("#alert2").show();
-  $("#alert2").html("<h4>You already guessed that!");
-}
-else if (playersGuess <=0 || playersGuess >100) {
-
-  $("#alert2").show();
-  $("#alert2").html("<h4>Please guess between 1 and 100!");
-}
+function GameInfo(playersGuess) {
+  this.winningNumber = Math.floor(Math.random()*101);
+  this.playersGuess = playersGuess;
+  this.count=[];
+  this.hintArr=[];
+  this.playersGuessSubmission = function () {
+    this.playersGuess=+document.getElementById('guess1').value;
     document.getElementById('guess1').value = "";
+  };
+  this.checkGuess = function () {
+    if (this.count.indexOf(this.playersGuess)<0 && this.playersGuess > 0 && this.playersGuess <= 100) { //if guess is valid add to array, progress guess count, hide alert2
+    this.count.push(this.playersGuess);
+    $("#alert2").hide();
+  }
+  else if (this.count.indexOf(this.playersGuess)>-1) {
+    $("#alert2").show();
+    $("#alert2").html("<h4>You already guessed that!");
+  }
+  else if (this.playersGuess <=0 || this.playersGuess >100) {
+    $("#alert2").show();
+    $("#alert2").html("<h4>Please guess between 1 and 100!");
+  }
+    if (this.playersGuess==this.winningNumber) {
+      hideAll();
+      $("#alert").html("<h1> YOU WIN!</h1>");
+      $("#alert").animate({
+        height: '+=200px'
+      });
+      $("#alert").css({"font-size": "200%"});
+      $("#alert2").hide();
+      $(".jumbotron").css({"background-color": "green"});
+    } else {
+      $("#alert").html("<h4>"+(5-this.count.length)+" guesses remaining.<br> "+this.guessMessage()+"</h4>");
+    }
+    if (this.count.length>=5) {
+          hideAll();
+          $("#alert").hide();
+          $("#alert2").show();
+          $("#alert2").html("<h1>You lose :(</h1>");
+          $("#alert2").animate({
+            height: '+=200px'
+          });
+          $("#alert").css({"font-size": "200%"});
+          $(".jumbotron").css({"background-color": "red"});
+      }
+  };
+  this.guessMessage = function() {
+    if (this.playersGuess >0 && this.playersGuess <=100)
+      return "Your guess was "+lowerOrHigher(this.playersGuess,this.winningNumber)+" by "+distance(this.playersGuess,this.winningNumber)+".";
+    else
+      return "";
+  };
+  this.provideHint = function() { //hints are within the range of the player's last guess
+    var dist = distance(this.winningNumber,this.playersGuess);
+    var lastDist = 0;
+    var max=0;
+    var min=0;
+    var ran=1;
 
-}
+  if (dist=="10-20")
+    lastDist=20;
+  else if (dist=="20-30")
+    lastDist=30;
+  else if (dist=="30-50")
+    lastDist=50;
+  else if(dist=="50-80"||dist==">80")
+    lastDist=80;
+  else
+    lastDist=10;
+
+  if (this.hintArr.length == (5-this.count.length)*2) {
+    $("#alert2").show();
+    $("#alert2").html("<h4>It's one of these: "+this.hintArr+".</h4>");
+  } else {
+   if (this.count.length>0) {
+    if (this.playersGuess>this.winningNumber) {
+        if ((this.playersGuess-lastDist)>0)
+            min=this.playersGuess-lastDist;
+        else
+            min=1;
+        max=this.playersGuess;
+    }
+    if (this.playersGuess<this.winningNumber) {
+         if ((this.playersGuess+lastDist)>100)
+            max=101;
+        else
+            max=this.playersGuess+lastDist+1;
+        min=this.playersGuess+1;
+    }
+    while (this.hintArr.length<((5-this.count.length)*2)) {
+        ran=Math.floor(Math.random()*(max-min)+min);
+        if (this.hintArr.indexOf(ran)>-1)
+          ran=Math.floor(Math.random()*(max-min)+min);
+        else
+         this.hintArr.push(ran);
+       };
+    if (this.hintArr.indexOf(this.winningNumber)<0)
+      this.hintArr[this.hintArr.length-1]=this.winningNumber;
+    this.hintArr.sort(function(a,b) {return a-b});
+  $("#alert2").show();
+  $("#alert2").html("<h4>It's one of these: "+this.hintArr+".</h4>");
+
+  }
+  else {
+    $("#alert2").show();
+    $("#alert2").html("<h4>You haven't made any guesses yet.</h4>");
+    }
+  }
+  };
+  }
 
 // Determine if the next guess should be a lower or higher number
-
-function lowerOrHigher(){
-	// add code here
-  if (playersGuess>winningNumber)
+function lowerOrHigher(a,b){
+  if (a>b)
     return "higher";
-  else {
-      return "lower";
-  }
-}
-
-// Check if the Player's Guess is the winning number
-
-function checkGuess(){
-  if (playersGuess==winningNumber) {
-    hideAll();
-    $("#alert").html("<h1> YOU WIN!</h1>");
-    $("#alert").animate({
-      height: '+=200px'
-    });
-    $("#alert").css({"font-size": "200%"});
-    $("#alert2").hide();
-    $(".jumbotron").css({"background-color": "green"});
-  } else {
-    $("#alert").html("<h4>"+guesses+" guesses remaining.<br> "+guessMessage()+"</h4>");
-  }
-  if (count.length>=5) {
-        hideAll();
-        $("#alert").hide();
-        $("#alert2").show();
-        $("#alert2").html("<h1>You lose :(</h1>");
-        $("#alert2").animate({
-          height: '+=200px'
-        });
-        $("#alert").css({"font-size": "200%"});
-        $(".jumbotron").css({"background-color": "red"});
-    }
-}
-
-function guessMessage() {
-if (playersGuess >0 && playersGuess <=100)
-  return "Your guess was "+lowerOrHigher()+" by "+distance()+".";
-else
-  return "";
+  else
+    return "lower";
 }
 
 function hideAll() {
@@ -90,85 +127,25 @@ function hideAll() {
   $("#name").hide();
 }
 
-function distance() {
-  if (Math.abs(playersGuess-winningNumber)>10&&Math.abs(playersGuess-winningNumber)<20) {
-    lastDist=20;
+function distance(a,b) {
+  if (Math.abs(a-b)>10&&Math.abs(a-b)<20)
     return "10-20";
-  }
-  else if (Math.abs(playersGuess-winningNumber)>20&&Math.abs(playersGuess-winningNumber)<30) {
-    lastDist=30;
+  else if (Math.abs(a-b)>20&&Math.abs(a-b)<30)
     return "20-30";
-  }
-  else if (Math.abs(playersGuess-winningNumber)>30&&Math.abs(playersGuess-winningNumber)<50) {
-      lastDist=50;
+  else if (Math.abs(a-b)>30&&Math.abs(a-b)<50)
       return "30-50";
-}
-  else if (Math.abs(playersGuess-winningNumber)>50&&Math.abs(playersGuess-winningNumber)<80) {
-    lastDist=80;
+  else if (Math.abs(a-b)>50&&Math.abs(a-b)<80)
       return "50-80";
-}
-  else if (Math.abs(playersGuess-winningNumber)>80) {
-    lastDist=80;
+  else if (Math.abs(a-b)>80)
     return ">80";
-  }
-  else {
-    lastDist=10;
+  else
     return "<10";
-  }
-
 }
-
-// Create a provide hint button that provides additional clues to the "Player"
-function provideHint(){ //hints are within the range of the player's last guess
-  var hintArr=[];
-  var max=0;
-  var min=0;
-  var ran=1;
-if (count.length>0) {
-  if (count[count.length-1]>winningNumber) {
-      if ((count[count.length-1]-lastDist)>0)
-          min=count[count.length-1]-lastDist;
-      else
-          min=1;
-      max=count[count.length-1];
-  }
-  if (count[count.length-1]<winningNumber) {
-       if ((count[count.length-1]+lastDist)>100)
-          max=101;
-      else
-          max=count[count.length-1]+lastDist+1;
-      min=count[count.length-1]+1;
-  }
-  while (hintArr.length<((5-count.length)*2)) {
-      ran=Math.floor(Math.random()*(max-min)+min);
-      if (hintArr.indexOf(ran)>-1)
-        ran=Math.floor(Math.random()*(max-min)+min);
-      else
-       hintArr.push(ran);
-     };
-
-  if (hintArr.indexOf(winningNumber)<0)
-    hintArr[hintArr.length-1]=winningNumber;
-  hintArr.sort(function(a,b) {return a-b});
-
-$("#alert2").show();
-$("#alert2").html("<h4>It's one of these: "+hintArr+".</h4>");
-}
-else {
-  $("#alert2").show();
-  $("#alert2").html("<h4>You haven't made any guesses yet.</h4>");
-  }
-}
-
 
 // Allow the "Player" to Play Again
 function playAgain(){
-  generateWinningNumber();
  location.reload();
+var play = new GameInfo();
 }
-
-
-
-
 
 /* **** Event Listeners/Handlers ****  */
