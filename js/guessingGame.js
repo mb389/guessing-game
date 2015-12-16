@@ -11,30 +11,19 @@ function GameInfo(playersGuess) {
   };
   this.checkGuess = function () {
     if (this.count.indexOf(this.playersGuess)<0 && this.playersGuess > 0 && this.playersGuess <= 100) { //if guess is valid add to array, progress guess count, hide alert2
-    this.count.push(this.playersGuess);
-    $("#alert2").hide();
-  }
-  else if (this.count.indexOf(this.playersGuess)>-1) {
-    $("#alert2").show();
-    $("#alert2").html("<h4>You already guessed that!");
-  }
-  else if (this.playersGuess <=0 || this.playersGuess >100) {
-    $("#alert2").show();
-    $("#alert2").html("<h4>Please guess between 1 and 100!");
-  }
-    if (this.playersGuess==this.winningNumber) {
-      hideAll();
-      $("#alert").html("<h1> YOU WIN!</h1>");
-      $("#alert").animate({
-        height: '+=200px'
-      });
-      $("#alert").css({"font-size": "200%"});
+      this.count.push(this.playersGuess);
       $("#alert2").hide();
-      $(".jumbotron").css({"background-color": "green"});
-    } else {
       $("#alert").html("<h4>"+(5-this.count.length)+" guesses remaining.<br> "+this.guessMessage()+"</h4>");
-    }
-    if (this.count.length>=5) {
+      if (this.playersGuess==this.winningNumber) {
+        hideAll();
+        $("#alert").html("<h1> YOU WIN!</h1>");
+        $("#alert").animate({
+          height: '+=200px'
+        });
+        $("#alert").css({"font-size": "200%"});
+        $(".jumbotron").css({"background-color": "green"});
+      }
+      else if (this.count.length>=5) {
           hideAll();
           $("#alert").hide();
           $("#alert2").show();
@@ -44,7 +33,16 @@ function GameInfo(playersGuess) {
           });
           $("#alert").css({"font-size": "200%"});
           $(".jumbotron").css({"background-color": "red"});
-      }
+        }
+    }
+    else if (this.count.indexOf(this.playersGuess)>-1) {
+      $("#alert2").show();
+      $("#alert2").html("<h4>You already guessed that!");
+    }
+    else if (this.playersGuess <=0 || this.playersGuess >100) {
+      $("#alert2").show();
+      $("#alert2").html("<h4>Please guess between 1 and 100!");
+    }
   };
   this.guessMessage = function() {
     if (this.playersGuess >0 && this.playersGuess <=100)
@@ -101,7 +99,6 @@ function GameInfo(playersGuess) {
     this.hintArr.sort(function(a,b) {return a-b});
   $("#alert2").show();
   $("#alert2").html("<h4>It's one of these: "+this.hintArr+".</h4>");
-
   }
   else {
     $("#alert2").show();

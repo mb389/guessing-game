@@ -36,10 +36,10 @@
       $("#submit").click(function(event) {
         play.playersGuessSubmission();
         play.checkGuess();
-      //$("#comp").text(play.playersGuess+", "+play.winningNumber+", ["+play.count+"]");
+        //$("#comp").text(play.playersGuess+", "+play.winningNumber+", ["+play.count+"]");
         $("#player").text(play.count);
         event.preventDefault();
-    });
+      });
     });
     </script>
 <h1 id="name">Make a guess</h1><br>
@@ -49,7 +49,7 @@
     <label for="guess1"></label>
     <input type="number" class="form-control input-lg" id="guess1" placeholder="Between 1 and 100"></input>
   </div>
-  <button type="submit" onclick="playersGuessSubmission();" onkeypress="playersGuessSubmission();" class="btn btn-success" id="submit">Submit</button>
+  <button type="submit" class="btn btn-success" id="submit">Submit</button>
 </form>
 </p>
 <p>
@@ -58,13 +58,13 @@
   <br>
 <!-- troubleshooting info <div>Info:<span id="comp"></span></div>-->
   <div class="alert alert-success" role="alert" id="alert"></div>
-  <div class="alert alert-danger" role="alert" id="alert2"></div>
+  <div class="alert alert-danger" role="alert" id="alert2" style="display:none"></div>
 </p>
 <br>
 <div>
 <p>
-    <button type="button" onclick="playAgain();" class="btn btn-sm btn-primary" id="again">Try Again</button>
-    <button type="button" onclick="provideHint();" class="btn btn-sm btn-primary" id="hint">I Need A Hint!</button>
+    <button type="button" onclick="playAgain();" class="btn btn-sm btn-primary" id="again">New Game</button>
+    <button type="button" class="btn btn-sm btn-primary" id="hint">I Need A Hint!</button>
   </p>
   </div>
 <br>
@@ -73,7 +73,6 @@
     <p>&copy; 2015 Michael Bushoy</p>
   </footer>
 </div>
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
